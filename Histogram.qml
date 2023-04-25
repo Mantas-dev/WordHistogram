@@ -9,6 +9,8 @@ Item {
     property string title       : "Наиболее встречающиеся слова"
     property color  barColor    : "#336699"
 
+    property alias  model       : histogramView.model
+
     ListModel {
         id : testModel
 
