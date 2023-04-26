@@ -5,11 +5,9 @@ import QtQuick.Dialogs 1.3
 
 import "."
 
-Window  {
+Item  {
     width   : 1600
     height  : 800
-    title   : "Наиболее встречающиеся слова"
-    color   : "#F8F8FF"
 
     FileDialog {
         id          : fileDialog
@@ -17,7 +15,7 @@ Window  {
         nameFilters : [ "Текстовые файлы (*.txt)" ]
         onAccepted  : {
             histogram.visible = true;
-            startButton.enabled = true;
+            ControllerLink.loadFile(fileUrl);
         }
     }
 
@@ -48,7 +46,10 @@ Window  {
             width           : 130
             height          : 50
             font.pixelSize  : 14
-            enabled         : false
+            enabled         : fileDialog.fileUrl != "" && !ControllerLink.readFileProccessing
+            onClicked: {
+                ControllerLink.readFile();
+            }
         }
     }
 
@@ -62,7 +63,7 @@ Window  {
             leftMargin      : 20
             rightMargin     : 45
         }
-        value: 0
+        value: ControllerLink.readFileProgress
 
         background: Rectangle {
             implicitHeight  : 50

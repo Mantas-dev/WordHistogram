@@ -1,6 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQuickView>
+#include <QQmlContext>
 
+#include "app/core/uicontrolller.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,14 +13,18 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-    engine.load(url);
+    app.setOrganizationName("orgname");
+    app.setOrganizationDomain("orgdomain");
+
+    QQuickView view;
+    UIControlller controller;
+
+    view.setSource(QUrl("qrc:/main.qml"));
+    view.setTitle("Наиболее встречающиеся слова");
+    view.setColor(QColor("#F8F8FF"));
+    view.rootContext()->setContextProperty("ControllerLink", &controller);
+
+    view.show();
 
     return app.exec();
 }
