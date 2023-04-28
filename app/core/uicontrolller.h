@@ -2,8 +2,9 @@
 #define UICONTROLLLER_H
 
 #include <QObject>
+#include <QSharedPointer>
 
-#include "filereader.h"
+#include "app/core/filereadertask.h"
 #include "app/macros/AutoPropertyHelpers.h"
 
 class UIControlller : public QObject
@@ -12,6 +13,7 @@ class UIControlller : public QObject
 
     READONLY_AUTO_PROPERTY(double, readFileProgress)
     READONLY_AUTO_PROPERTY(bool, readFileProccessing)
+    READONLY_AUTO_PROPERTY(bool, readFilePaused)
 
 public:
     explicit UIControlller(QObject *parent = nullptr);
@@ -19,9 +21,12 @@ public:
 public slots:
     void loadFile(const QString &fileUrl);
     void readFile();
+    void pauseReadFile();
+    void continueReadFile();
+    void stopReadFile();
 
 private:
-    FileReader m_reader;
+    QSharedPointer<FileReaderTask> m_fileReaderTask;
     QString m_filePath;
 
 };

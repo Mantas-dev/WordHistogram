@@ -51,6 +51,34 @@ Item  {
                 ControllerLink.readFile();
             }
         }
+
+        Button {
+            id              : pauseButton
+            text            : ControllerLink.readFilePaused ? "Возобновить"
+                                                            : "Пауза"
+            width           : 130
+            height          : 50
+            font.pixelSize  : 14
+            enabled         : ControllerLink.readFileProccessing
+            onClicked: {
+                if (ControllerLink.readFilePaused)
+                    ControllerLink.continueReadFile();
+                else
+                    ControllerLink.pauseReadFile();
+            }
+        }
+
+        Button {
+            id              : cancelButton
+            text            : "Отмена"
+            width           : 130
+            height          : 50
+            font.pixelSize  : 14
+            enabled         : ControllerLink.readFileProccessing
+            onClicked: {
+                ControllerLink.stopReadFile();
+            }
+        }
     }
 
 
