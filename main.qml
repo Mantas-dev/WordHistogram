@@ -119,7 +119,8 @@ Item  {
             right   : parent.right
             bottom  : parent.bottom
         }
-        model   : {}
+        model   : ControllerLink.histogramModel
+        maxValue: ControllerLink.histogramModel.maxEntriesCount
         visible : false
     }
 }

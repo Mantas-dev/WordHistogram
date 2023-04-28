@@ -8,6 +8,8 @@ UIControlller::UIControlller(QObject *parent) : QObject(parent)
     m_fileReaderTask.reset(new FileReaderTask());
     m_fileReaderTask->setAutoDelete(false);
 
+    m_histogramModel = new HistogramListModel(parent);
+
     update_readFileProccessing(false);
     update_readFilePaused(false);
     update_readFileProgress(0);
@@ -18,6 +20,8 @@ UIControlller::UIControlller(QObject *parent) : QObject(parent)
             this, [&](){ update_readFileProccessing(true); });
     connect(m_fileReaderTask.get(), &FileReaderTask::readFileFinished,
             this, [&](){ update_readFileProccessing(false); });
+    connect(m_fileReaderTask.get(), &FileReaderTask::wordEntriesUpdated,
+            this, [&](){ m_histogramModel->loadData(m_fileReaderTask->getWordsEntries()); });
 }
 
 void UIControlller::loadFile(const QString &fileUrl)

@@ -7,6 +7,8 @@ Q_LOGGING_CATEGORY(fileReaderTask, "FileReaderTask")
 FileReaderTask::FileReaderTask()
     : m_stopReadFile(false), m_pauseReadFile(false)
 {
+    connect(&m_wordsParser, &WordsParser::wordEntriesUpdated,
+            this, &FileReaderTask::wordEntriesUpdated);
 }
 
 FileReaderTask::~FileReaderTask()
@@ -30,6 +32,11 @@ void FileReaderTask::run()
     qCDebug(fileReaderTask) << "Reading file was started";
     emit readFileStarted();
 
+    int chunkCounter = 0;
+    bool parsedDataLoaded;
+
+    m_wordsParser.clear();
+
     while (!m_file.atEnd()) {
         if (m_stopReadFile.testAndSetAcquire(true, false)) {
             qCDebug(fileReaderTask) << "Reading file was stopped";
@@ -41,12 +48,24 @@ void FileReaderTask::run()
             continue;
         }
 
-        QByteArray fileChunk = m_file.read(m_chunkSizeKb * 1024);
-//        qCDebug(fileReaderTask) << "fileLine - " << fileChunk;
+        parsedDataLoaded = false;
+        QString fileChunk = m_file.read(m_chunkSizeKb * 1024);
+
+        m_wordsParser.parseString(fileChunk);
         emit readFileProgressUpdated((double) m_file.pos() / m_file.size());
+
+        if (chunkCounter % 5 == 0) {
+            m_wordsParser.loadParsedData();
+            parsedDataLoaded = true;
+        }
+
+        chunkCounter++;
     }
 
     m_file.close();
+
+    if (!parsedDataLoaded)
+        m_wordsParser.loadParsedData();
 
     qCDebug(fileReaderTask) << "Reading file was finished";
     emit readFileFinished();
@@ -74,4 +93,9 @@ void FileReaderTask::pauseReadFile()
 {
     qCDebug(fileReaderTask) << "Pause read file";
     m_pauseReadFile.fetchAndStoreAcquire(true);
+}
+
+const QMultiMap<QString, int> &FileReaderTask::getWordsEntries()
+{
+    return m_wordsParser.getWordsEntries();
 }

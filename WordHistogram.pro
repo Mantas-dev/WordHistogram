@@ -9,6 +9,8 @@ CONFIG += c++14
 SOURCES += \
         app/core/filereadertask.cpp \
         app/core/uicontrolller.cpp \
+        app/core/wordsparser.cpp \
+        app/model/histogramlistmodel.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -27,5 +29,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     app/core/filereadertask.h \
     app/core/uicontrolller.h \
+    app/core/wordsparser.h \
     app/macros/AutoPropertyHelpers.h \
-    app/macros/PropertyHelpersCommon.h
+    app/macros/PropertyHelpersCommon.h \
+    app/model/histogramlistmodel.h

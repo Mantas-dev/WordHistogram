@@ -6,6 +6,8 @@
 #include <QFile>
 #include <QAtomicInt>
 
+#include "app/core/wordsparser.h"
+
 class FileReaderTask : public QObject, public QRunnable
 {
     Q_OBJECT
@@ -19,15 +21,18 @@ public:
     void setFileName(const QString &fileName);
     void continueReadFile();
     void pauseReadFile();
+    const QMultiMap<QString, int>& getWordsEntries();
 
 signals:
     void readFileStarted();
     void readFileFinished();
     void readFileProgressUpdated(const double &progressValue);
+    void wordEntriesUpdated();
 
 private:
     QFile m_file;
     QAtomicInt m_stopReadFile, m_pauseReadFile;
+    WordsParser m_wordsParser;
 
     quint64 m_chunkSizeKb = 1000;
 };

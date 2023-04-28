@@ -6,6 +6,7 @@
 
 #include "app/core/filereadertask.h"
 #include "app/macros/AutoPropertyHelpers.h"
+#include "app/model/histogramlistmodel.h"
 
 class UIControlller : public QObject
 {
@@ -14,6 +15,7 @@ class UIControlller : public QObject
     READONLY_AUTO_PROPERTY(double, readFileProgress)
     READONLY_AUTO_PROPERTY(bool, readFileProccessing)
     READONLY_AUTO_PROPERTY(bool, readFilePaused)
+    CONSTANT_AUTO_PROPERTY(HistogramListModel *, histogramModel)
 
 public:
     explicit UIControlller(QObject *parent = nullptr);
