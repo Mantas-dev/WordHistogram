@@ -46,6 +46,7 @@ void UIControlller::loadFile(const QString &fileUrl)
 
 void UIControlller::readFile()
 {
+    m_histogramModel->resetModel();
     m_fileReaderTask->setFileName(m_filePath);
     QThreadPool::globalInstance()->start(m_fileReaderTask.get());
 }
