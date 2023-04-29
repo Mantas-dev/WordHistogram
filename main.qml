@@ -29,7 +29,7 @@ Item  {
             leftMargin  : container.width * 0.00938
         }
         text            : "Открыть"
-        width           : container.width * 0.09375
+        width           : container.width * 0.3
         height          : container.height * 0.063
         font.pixelSize  : 14
         onClicked: {

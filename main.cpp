@@ -23,9 +23,10 @@ int main(int argc, char *argv[])
     view.setTitle("Наиболее встречающиеся слова");
     view.setColor(QColor("#F8F8FF"));
     view.rootContext()->setContextProperty("ControllerLink", &controller);
+    view.setResizeMode(QQuickView::SizeRootObjectToView);
 
 #ifdef Q_OS_ANDROID
-    view.showMaximized();
+    view.showFullScreen();
 #else
     view.show();
 #endif

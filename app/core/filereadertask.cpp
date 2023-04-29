@@ -31,7 +31,7 @@ void FileReaderTask::run()
     qCDebug(fileReaderTask) << "Reading file was started";
     emit readFileStarted();
 
-    int lineCounter = 0, linesChunk = 30;
+    int lineCounter = 0, linesChunk = 15;
     bool parsedDataLoaded;
 
     m_wordsParser.clear();
