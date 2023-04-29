@@ -58,6 +58,11 @@ QHash<int, QByteArray> HistogramListModel::roleNames() const
     return m_roles;
 }
 
+/**
+ * @brief Загружает данные из словаря в модель
+ * @param dataMap - объект QMultiMap<QString, int>
+ */
+
 void HistogramListModel::loadData(const QMultiMap<QString, int> &dataMap)
 {
     beginResetModel();
@@ -73,6 +78,10 @@ void HistogramListModel::loadData(const QMultiMap<QString, int> &dataMap)
 
     endResetModel();
 }
+
+/**
+ * @brief Сбрасывает данные в модели
+ */
 
 void HistogramListModel::resetModel()
 {

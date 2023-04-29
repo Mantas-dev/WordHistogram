@@ -7,6 +7,11 @@ WordsParser::WordsParser(QObject *parent) : QObject(parent)
 
 }
 
+/**
+ * @brief Выполняет парсинг строки для подсчета слов в ней
+ * @param wordsString - строка, содержащая слова
+ */
+
 void WordsParser::parseString(QString &wordsString)
 {
     wordsString = wordsString.remove(QRegExp("[.,:;!?\\-\\[\\]\"\']")).toLower().simplified();
@@ -28,6 +33,12 @@ void WordsParser::parseString(QString &wordsString)
     }
 }
 
+/**
+ * @brief Загружает данные из multimap<int, QString> (количество вхождений - слово)
+ * в QMultiMap<QString, int> (слово - количество вхождений) для сортировки слов в
+ * алфавитном порядке
+ */
+
 void WordsParser::loadParsedData()
 {
     if (m_wordsCountMap.empty())
@@ -43,11 +54,20 @@ void WordsParser::loadParsedData()
     emit wordEntriesUpdated();
 }
 
+/**
+ * @brief Очищает данные класса
+ */
+
 void WordsParser::clear()
 {
     m_wordsCountMap.clear();
     m_entriesMap.clear();
 }
+
+/**
+ * @brief Возвращает данные о количестве вхождений слов в файле
+ * @return Объект QMultiMap<QString, int>, ключ - слово, значение - количество вхождений
+ */
 
 const QMultiMap<QString, int> &WordsParser::getWordsEntries()
 {

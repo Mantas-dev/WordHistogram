@@ -30,6 +30,11 @@ UIControlller::~UIControlller()
     QThreadPool::globalInstance()->waitForDone();
 }
 
+/**
+ * @brief Выполняет подготовку файла к чтению
+ * @param fileUrl - путь к файлу
+ */
+
 void UIControlller::loadFile(const QString &fileUrl)
 {
     const QUrl url(fileUrl);
@@ -44,6 +49,10 @@ void UIControlller::loadFile(const QString &fileUrl)
     m_histogramModel->resetModel();
 }
 
+/**
+ * @brief Запускает процесс чтения файла
+ */
+
 void UIControlller::readFile()
 {
     m_histogramModel->resetModel();
@@ -51,17 +60,29 @@ void UIControlller::readFile()
     QThreadPool::globalInstance()->start(m_fileReaderTask.get());
 }
 
+/**
+ * @brief Выполняет остановку процесса чтения файла
+ */
+
 void UIControlller::pauseReadFile()
 {
     update_readFilePaused(true);
     m_fileReaderTask->pauseReadFile();
 }
 
+/**
+ * @brief Возобновляет процесс чтения файла
+ */
+
 void UIControlller::continueReadFile()
 {
     update_readFilePaused(false);
     m_fileReaderTask->continueReadFile();
 }
+
+/**
+ * @brief Отменяет процесс чтения файла
+ */
 
 void UIControlller::stopReadFile()
 {

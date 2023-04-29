@@ -16,6 +16,12 @@ FileReaderTask::~FileReaderTask()
     m_file.close();
 }
 
+/**
+ * @brief Переопределенный метод класса QRunnable.
+ * Содержит логику чтения файла и отправки прочитанных данных в
+ * объект парсера
+ */
+
 void FileReaderTask::run()
 {
     if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -72,6 +78,10 @@ void FileReaderTask::run()
     emit readFileFinished();
 }
 
+/**
+ * @brief Отменяет процесс чтения файла
+ */
+
 void FileReaderTask::stopReadFile()
 {
     qCDebug(fileReaderTask) << "Stop read file";
@@ -79,10 +89,19 @@ void FileReaderTask::stopReadFile()
     m_pauseReadFile.fetchAndStoreAcquire(false);
 }
 
+/**
+ * @brief Задает имя открываемого файла
+ * @param fileName - строка с путем к файлу
+ */
+
 void FileReaderTask::setFileName(const QString &fileName)
 {
     m_file.setFileName(fileName);
 }
+
+/**
+ * @brief Продолжает чтение файла
+ */
 
 void FileReaderTask::continueReadFile()
 {
@@ -90,11 +109,20 @@ void FileReaderTask::continueReadFile()
     m_pauseReadFile.fetchAndStoreAcquire(false);
 }
 
+/**
+ * @brief Останавливает чтение файла
+ */
+
 void FileReaderTask::pauseReadFile()
 {
     qCDebug(fileReaderTask) << "Pause read file";
     m_pauseReadFile.fetchAndStoreAcquire(true);
 }
+
+/**
+ * @brief Возвращает данные о количестве вхождений слов в файле
+ * @return Объект QMultiMap<QString, int>, ключ - слово, значение - количество вхождений
+ */
 
 const QMultiMap<QString, int> &FileReaderTask::getWordsEntries()
 {
