@@ -24,7 +24,11 @@ int main(int argc, char *argv[])
     view.setColor(QColor("#F8F8FF"));
     view.rootContext()->setContextProperty("ControllerLink", &controller);
 
+#ifdef Q_OS_ANDROID
+    view.showMaximized();
+#else
     view.show();
+#endif
 
     return app.exec();
 }

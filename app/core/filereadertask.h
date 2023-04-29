@@ -33,8 +33,6 @@ private:
     QFile m_file;
     QAtomicInt m_stopReadFile, m_pauseReadFile;
     WordsParser m_wordsParser;
-
-    quint64 m_chunkSizeKb = 1000;
 };
 
 #endif // FILEREADERTASK_H

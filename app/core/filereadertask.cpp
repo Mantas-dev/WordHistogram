@@ -14,7 +14,6 @@ FileReaderTask::FileReaderTask()
 FileReaderTask::~FileReaderTask()
 {
     m_file.close();
-    stopReadFile();
 }
 
 void FileReaderTask::run()
@@ -32,7 +31,7 @@ void FileReaderTask::run()
     qCDebug(fileReaderTask) << "Reading file was started";
     emit readFileStarted();
 
-    int chunkCounter = 0;
+    int lineCounter = 0, linesChunk = 30;
     bool parsedDataLoaded;
 
     m_wordsParser.clear();
@@ -49,17 +48,19 @@ void FileReaderTask::run()
         }
 
         parsedDataLoaded = false;
-        QString fileChunk = m_file.read(m_chunkSizeKb * 1024);
+        QString fileLine = m_file.readLine();
 
-        m_wordsParser.parseString(fileChunk);
+        m_wordsParser.parseString(fileLine);
         emit readFileProgressUpdated((double) m_file.pos() / m_file.size());
 
-        if (chunkCounter % 5 == 0) {
+        //Уменьшает количество вызовов загрузок
+        //для более плавного обновления гистограммы
+        if (lineCounter % linesChunk == 0) {
             m_wordsParser.loadParsedData();
             parsedDataLoaded = true;
         }
 
-        chunkCounter++;
+        lineCounter++;
     }
 
     m_file.close();

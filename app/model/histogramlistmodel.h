@@ -20,7 +20,8 @@ class HistogramListModel : public QAbstractListModel
 public:
     enum Roles {
         word = Qt::UserRole + 1,
-        count
+        count,
+        itemColor
     };
 
     explicit HistogramListModel(QObject *parent = nullptr);
@@ -35,6 +36,7 @@ public:
 
 private:
     QList<HistogramItem> m_items;
+    QList<QString> m_colors;
     QHash<int, QByteArray> m_roles;
 
 };

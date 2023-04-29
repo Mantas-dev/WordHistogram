@@ -9,7 +9,7 @@ WordsParser::WordsParser(QObject *parent) : QObject(parent)
 
 void WordsParser::parseString(QString &wordsString)
 {
-    wordsString = wordsString.remove(QRegExp("[.,:;!?\"\']")).toLower().simplified();
+    wordsString = wordsString.remove(QRegExp("[.,:;!?\\-\\[\\]\"\']")).toLower().simplified();
 
     for (const auto &word : wordsString.split(' ', Qt::SkipEmptyParts)) {
 

@@ -24,6 +24,12 @@ UIControlller::UIControlller(QObject *parent) : QObject(parent)
             this, [&](){ m_histogramModel->loadData(m_fileReaderTask->getWordsEntries()); });
 }
 
+UIControlller::~UIControlller()
+{
+    m_fileReaderTask->stopReadFile();
+    QThreadPool::globalInstance()->waitForDone();
+}
+
 void UIControlller::loadFile(const QString &fileUrl)
 {
     const QUrl url(fileUrl);
@@ -34,6 +40,8 @@ void UIControlller::loadFile(const QString &fileUrl)
         m_filePath = QDir::toNativeSeparators(url.toLocalFile());
 
     update_readFileProccessing(false);
+    update_readFileProgress(0);
+    m_histogramModel->resetModel();
 }
 
 void UIControlller::readFile()
@@ -59,4 +67,5 @@ void UIControlller::stopReadFile()
     m_fileReaderTask->stopReadFile();
     update_readFilePaused(false);
     update_readFileProccessing(false);
+    m_histogramModel->resetModel();
 }

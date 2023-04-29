@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.3
 import "."
 
 Item  {
+    id      : container
     width   : 1600
     height  : 800
 
@@ -19,82 +20,36 @@ Item  {
         }
     }
 
-    Row {
-        id : buttonsPanel
+    Button {
+        id              : openButton
         anchors {
             top         : parent.top
             left        : parent.left
-            topMargin   : 15
-            leftMargin  : 15
+            topMargin   : container.height * 0.01875
+            leftMargin  : container.width * 0.00938
         }
-        spacing: 15
-
-        Button {
-            id              : openButton
-            text            : "Открыть"
-            width           : 130
-            height          : 50
-            font.pixelSize  : 14
-            onClicked: {
-                fileDialog.open();
-            }
-        }
-
-        Button {
-            id              : startButton
-            text            : "Старт"
-            width           : 130
-            height          : 50
-            font.pixelSize  : 14
-            enabled         : fileDialog.fileUrl != "" && !ControllerLink.readFileProccessing
-            onClicked: {
-                ControllerLink.readFile();
-            }
-        }
-
-        Button {
-            id              : pauseButton
-            text            : ControllerLink.readFilePaused ? "Возобновить"
-                                                            : "Пауза"
-            width           : 130
-            height          : 50
-            font.pixelSize  : 14
-            enabled         : ControllerLink.readFileProccessing
-            onClicked: {
-                if (ControllerLink.readFilePaused)
-                    ControllerLink.continueReadFile();
-                else
-                    ControllerLink.pauseReadFile();
-            }
-        }
-
-        Button {
-            id              : cancelButton
-            text            : "Отмена"
-            width           : 130
-            height          : 50
-            font.pixelSize  : 14
-            enabled         : ControllerLink.readFileProccessing
-            onClicked: {
-                ControllerLink.stopReadFile();
-            }
+        text            : "Открыть"
+        width           : container.width * 0.09375
+        height          : container.height * 0.063
+        font.pixelSize  : 14
+        onClicked: {
+            fileDialog.open();
         }
     }
-
 
     ProgressBar {
         id : progress
         anchors {
-            verticalCenter  : buttonsPanel.verticalCenter
-            left            : buttonsPanel.right
+            verticalCenter  : openButton.verticalCenter
+            left            : openButton.right
             right           : parent.right
-            leftMargin      : 20
-            rightMargin     : 45
+            leftMargin      : container.width * 0.00938
+            rightMargin     : container.width * 0.00938
         }
         value: ControllerLink.readFileProgress
 
         background: Rectangle {
-            implicitHeight  : 50
+            implicitHeight  : container.height * 0.063
             color           : "#E6E6E6"
             radius          : 3
         }
@@ -114,13 +69,67 @@ Item  {
     Histogram {
         id : histogram
         anchors {
-            top     : buttonsPanel.bottom
-            left    : parent.left
-            right   : parent.right
-            bottom  : parent.bottom
+            top         : progress.bottom
+            left        : parent.left
+            right       : parent.right
+            bottom      : buttonsPanel.top
+            bottomMargin: container.height * 0.01875
         }
         model   : ControllerLink.histogramModel
         maxValue: ControllerLink.histogramModel.maxEntriesCount
         visible : false
     }
+
+
+    Row {
+        id : buttonsPanel
+        anchors {
+            left            : parent.left
+            bottom          : parent.bottom
+            leftMargin      : container.width * 0.00938
+            bottomMargin    : container.height * 0.01875
+        }
+        spacing:  container.width * 0.00938
+
+        Button {
+            id              : startButton
+            text            : "Старт"
+            width           : (container.width - container.width * 0.038) / 3
+            height          : container.height * 0.063
+            font.pixelSize  : 14
+            enabled         : fileDialog.fileUrl != "" && !ControllerLink.readFileProccessing
+            onClicked: {
+                ControllerLink.readFile();
+            }
+        }
+
+        Button {
+            id              : pauseButton
+            text            : ControllerLink.readFilePaused ? "Возобновить"
+                                                            : "Пауза"
+            width           : (container.width - container.width * 0.038) / 3
+            height          : container.height * 0.063
+            font.pixelSize  : 14
+            enabled         : ControllerLink.readFileProccessing
+            onClicked: {
+                if (ControllerLink.readFilePaused)
+                    ControllerLink.continueReadFile();
+                else
+                    ControllerLink.pauseReadFile();
+            }
+        }
+
+        Button {
+            id              : cancelButton
+            text            : "Отмена"
+            width           : (container.width - container.width * 0.038) / 3
+            height          : container.height * 0.063
+            font.pixelSize  : 14
+            enabled         : ControllerLink.readFileProccessing
+            onClicked: {
+                ControllerLink.stopReadFile();
+            }
+        }
+    }
+
 }

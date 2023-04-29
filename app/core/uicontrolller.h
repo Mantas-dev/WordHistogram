@@ -19,6 +19,7 @@ class UIControlller : public QObject
 
 public:
     explicit UIControlller(QObject *parent = nullptr);
+    ~UIControlller();
 
 public slots:
     void loadFile(const QString &fileUrl);
